@@ -12,7 +12,6 @@ class CTP():
 		self.api_secret = 'eTCnWarGzAyn5oIIZUkSHt7JdIUpYzS5lq7oZTx7zz4TjVTiH8'
 		self.oauth_token = 'tHZItSfPprgbXHsDDx1MgzGolv0IMwc6ccfd3MrAiH3ZTbqRGR'
 		self.oauth_secret = 'OlvCCgAwwtSiIJTHcE6nMINORFcenDx92D6X8u1sSAfwdE3xa9' 
-		
 		# Authenticate via OAuth 
 		self.client = pytumblr.TumblrRestClient(
 			self.api_key, 
@@ -24,7 +23,6 @@ class CTP():
 		print self.client.info()	
 
 	def cleanup(self):
-		self.logf.close()
 		self.indexf.close()
 
 if __name__ == '__main__':
