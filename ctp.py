@@ -4,6 +4,7 @@ from os import listdir
 import sys
 import argparse
 import pytumblr
+import random
 
 class CTP():
 	def __init__(self, indexf):
@@ -11,7 +12,8 @@ class CTP():
 		self.indexf = indexf
 		with open(self.indexf, 'r') as f:
 			uploaded = [l.strip() for l in f]
-		self.photos_list = list(set(uploaded) - set(listdir("./photos")))
+		all_photos = listdir("./photos")
+		self.photos_list = list(set(all_photos) - set(uploaded))
 
 		self.api_key = 'VABuQIpKd3HPGJlXUVtA4nLOjAkgfzfzhGAIvrh5AYH15b1lLK'
 		self.api_secret = 'eTCnWarGzAyn5oIIZUkSHt7JdIUpYzS5lq7oZTx7zz4TjVTiH8'
@@ -24,12 +26,28 @@ class CTP():
 			self.oauth_token,
 			self.oauth_secret)
 
+		self.random = random
+		self.random.seed()
+
+	def post_random_photo(self):
+		count = len(self.photos_list)
+		if count == 0:
+			print "No more photos to post!"
+			return
+
+		i = 0
+		if count > 1:
+			i = self.random.randint(0, count - 1)
+		self.post(self.photos_list[i])
+
 	def post(self, name):
-		print self.client.create_photo(
+		resp = self.client.create_photo(
 			"chihiroandthomas",
 			state="published",
 			tags=["photos-in-review"],
 			data="./photos/" + name)
+
+		print "Posted " + name + " as id " + str(resp["id"])
 
 		with open(self.indexf, "w") as f:
 			f.write(name + '\n')
@@ -40,4 +58,4 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
 	ctp = CTP(args.i)
-	ctp.post("test.jpg")
+	ctp.post_random_photo()
