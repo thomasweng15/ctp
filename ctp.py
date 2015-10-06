@@ -20,12 +20,11 @@ class CTP():
 			self.oauth_secret)
 
 	def post(self):
-		print self.client.create_text(
+		print self.client.create_photo(
 			"chihiroandthomas",
 			state="published",
-			slug="testing-text-posts",
-			title="Testing",
-			body="testing1 2 3 4")
+			tags=["photos-in-review"],
+			data="./test.jpg")
 
 	def cleanup(self):
 		self.indexf.close()
