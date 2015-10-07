@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/env python
 
 from os import listdir
 import sys
@@ -7,12 +7,13 @@ import pytumblr
 import random
 
 class CTP():
-	def __init__(self, indexf):
+	def __init__(self, indexf, photodir):
 		# TODO check that indexf exists
 		self.indexf = indexf
+		self.photodir = photodir
 		with open(self.indexf, 'r') as f:
 			uploaded = [l.strip() for l in f]
-		all_photos = listdir("./photos")
+		all_photos = listdir(self.photodir)
 		self.photos_list = list(set(all_photos) - set(uploaded))
 
 		self.api_key = 'VABuQIpKd3HPGJlXUVtA4nLOjAkgfzfzhGAIvrh5AYH15b1lLK'
@@ -44,18 +45,19 @@ class CTP():
 		resp = self.client.create_photo(
 			"chihiroandthomas",
 			state="published",
-			tags=["photos-in-review"],
-			data="./photos/" + name)
+			tags=["photobot"],
+			data=self.photodir + name)
 
 		print "Posted " + name + " as id " + str(resp["id"])
 
-		with open(self.indexf, "w") as f:
+		with open(self.indexf, "a") as f:
 			f.write(name + '\n')
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Tumblr photo poster')
 	parser.add_argument('-i', help='index file', default='index.txt')
+	parser.add_argument('-p', help='photos dir', default='photos/')
 	args = parser.parse_args()
 
-	ctp = CTP(args.i)
+	ctp = CTP(args.i, args.p)
 	ctp.post_random_photo()

@@ -1,1 +1,4 @@
-0 20 * * * python ctp.py >> log.txt
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+30 18 * * * /usr/bin/python /home/pi/ctp/ctp.py -i /home/pi/ctp/index.txt -p /home/pi/ctp/photos/ >> /home/pi/ctp/log.txt 2>&1
